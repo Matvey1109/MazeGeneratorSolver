@@ -8,6 +8,10 @@ class Generator(ABC):
     Abstract class for maze generators
     """
 
+    def __init__(self, height: int, width: int) -> None:
+        self._height: int = height
+        self._width: int = width
+
     @abstractmethod
-    def generate(self, height: int, width: int) -> Maze:
+    def generate(self) -> Maze:
         raise NotImplementedError
