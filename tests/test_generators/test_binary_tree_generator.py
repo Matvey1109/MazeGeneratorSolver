@@ -41,5 +41,5 @@ class TestBinaryTreeGenerator:
 
     def test_generate(self, binary_tree_generator: BinaryTreeGenerator):
         maze: Maze = binary_tree_generator.generate()
-        assert maze.height == 5
-        assert maze.width == 5
+        assert maze._height == 5
+        assert maze._width == 5

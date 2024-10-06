@@ -14,4 +14,5 @@ class Generator(ABC):
 
     @abstractmethod
     def generate(self) -> Maze:
+        """Abstract method to generate maze"""
         raise NotImplementedError
