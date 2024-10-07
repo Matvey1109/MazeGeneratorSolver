@@ -1,5 +1,6 @@
-from solvers.solver import Solver
 from queue import Queue
+
+from solvers.solver import Solver
 from type_of_cell import TypeOfCell
 
 

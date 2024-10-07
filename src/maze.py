@@ -1,4 +1,5 @@
 import random
+
 from position import Position
 from type_of_cell import TypeOfCell
 
