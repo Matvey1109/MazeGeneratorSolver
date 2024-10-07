@@ -18,9 +18,9 @@ class TestWilsonGenerator:
 
     def test_get_final_grid(self, wilson_generator: WilsonGenerator):
         wilson_generator._create_zero_grid()
-        final_grid: list[list[str]] = wilson_generator._get_final_grid()
-        assert len(final_grid) == 11
-        assert len(final_grid[0]) == 11
+        maze_grid: list[list[str]] = wilson_generator._get_maze_grid()
+        assert len(maze_grid) == 11
+        assert len(maze_grid[0]) == 11
 
     def test_generate(self, wilson_generator: WilsonGenerator):
         maze: Maze = wilson_generator.generate()

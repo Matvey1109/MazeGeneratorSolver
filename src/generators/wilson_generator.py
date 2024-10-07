@@ -7,7 +7,7 @@ from type_of_cell import TypeOfCell
 
 class WilsonGenerator(Generator):
     """
-    Class for maze generator based on the Wilson algorithm
+    Class for maze generator based on the Wilson's algorithm
     """
 
     def __init__(self, height: int, width: int) -> None:
@@ -15,11 +15,11 @@ class WilsonGenerator(Generator):
         super().__init__(height, width)
 
     def generate(self) -> Maze:
-        """Generate a maze using the Wilson algorithm"""
+        """Generate a maze using the Wilson's algorithm"""
         self._create_zero_grid()
 
-        final_grid: list[list[str]] = self._get_final_grid()
-        generated_maze: Maze = Maze(self._height, self._width, final_grid)
+        maze_grid: list[list[str]] = self._get_maze_grid()
+        generated_maze: Maze = Maze(self._height, self._width, maze_grid)
 
         return generated_maze
 
@@ -31,94 +31,91 @@ class WilsonGenerator(Generator):
 
         self._grid: list[list[int]] = grid
 
-    def _get_final_grid(self) -> list[list[str]]:
-        """Get the final grid based on the zero grid"""
-        final_grid: list[list[str]] = [
+    def _get_maze_grid(self) -> list[list[str]]:
+        """Get the maze grid based on the zero grid"""
+        maze_grid: list[list[str]] = [
             [TypeOfCell.WALL.value for _ in range(self._width * 2 + 1)]
             for _ in range(self._height * 2 + 1)
         ]
 
-        c: int = self._height * self._width  # number of cells to be visited
+        total_cells: int = self._height * self._width
+        cells_visited: int = 0
 
-        # choose random cell
-        i: int = random.randrange(self._height)
-        j: int = random.randrange(self._width)
-        self._grid[i][j] = 1
+        # choosing random cell
+        start_row: int = random.randrange(self._height)
+        start_col: int = random.randrange(self._width)
+        self._grid[start_row][start_col] = 1
 
-        visited: list[list[int]] = [[i, j]]
+        visited_cells: list[list[int]] = [[start_row, start_col]]
         visited_from: list[int] = [0]
 
-        while sum(sum(1 for val in row if val != 0) for row in self._grid) < c:
-            if self._grid[i][j] == 1:
-                for i in range(len(visited)):
-                    ve = visited[i]
-                    vi = ve[0]
-                    vj = ve[1]
-                    self._grid[vi][vj] = 1
-                    w = vi * 2 + 1
-                    k = vj * 2 + 1
-                    final_grid[w][k] = " "
+        while cells_visited < total_cells:
+            if self._grid[start_row][start_col] == 1:
+                for idx, cell in enumerate(visited_cells):
+                    v_row, v_col = cell
+                    self._grid[v_row][v_col] = 1
+                    row_offset = v_row * 2 + 1
+                    col_offset = v_col * 2 + 1
+                    maze_grid[row_offset][col_offset] = " "
 
-                    vf = visited_from[i]
+                    direction = visited_from[idx]
 
-                    if vf == 1:
-                        final_grid[w - 1][k] = " "
-                        final_grid[w - 2][k] = " "
-                    elif vf == 2:
-                        final_grid[w][k + 1] = " "
-                        final_grid[w][k + 2] = " "
-                    elif vf == 3:
-                        final_grid[w + 1][k] = " "
-                        final_grid[w + 2][k] = " "
-                    elif vf == 4:
-                        final_grid[w][k - 1] = " "
-                        final_grid[w][k - 2] = " "
+                    if direction == 1:
+                        maze_grid[row_offset - 1][col_offset] = " "
+                        maze_grid[row_offset - 2][col_offset] = " "
+                    elif direction == 2:
+                        maze_grid[row_offset][col_offset + 1] = " "
+                        maze_grid[row_offset][col_offset + 2] = " "
+                    elif direction == 3:
+                        maze_grid[row_offset + 1][col_offset] = " "
+                        maze_grid[row_offset + 2][col_offset] = " "
+                    elif direction == 4:
+                        maze_grid[row_offset][col_offset - 1] = " "
+                        maze_grid[row_offset][col_offset - 2] = " "
 
-                visited.clear()
+                visited_cells.clear()
                 visited_from.clear()
-                i = random.randrange(self._height)
-                j = random.randrange(self._width)
-                visited.append([i, j])
+                start_row = random.randrange(self._height)
+                start_col = random.randrange(self._width)
+                visited_cells.append([start_row, start_col])
                 visited_from.append(0)
 
             else:
-                if [i, j] in visited:
-                    visited.clear()
+                if [start_row, start_col] in visited_cells:
+                    visited_cells.clear()
                     visited_from.clear()
 
-                visited.append([i, j])
-                can_go = [1, 1, 1, 1]
+                visited_cells.append([start_row, start_col])
+                can_move = [1, 1, 1, 1]
 
-                if i == 0:
-                    can_go[0] = 0
-                if i == self._height - 1:
-                    can_go[2] = 0
-                if j == 0:
-                    can_go[3] = 0
-                if j == self._width - 1:
-                    can_go[1] = 0
+                if start_row == 0:
+                    can_move[0] = 0
+                if start_row == self._height - 1:
+                    can_move[2] = 0
+                if start_col == 0:
+                    can_move[3] = 0
+                if start_col == self._width - 1:
+                    can_move[1] = 0
 
-                nonzero_indices: list[int] = [
-                    index for index, value in enumerate(can_go) if value != 0
+                available_moves: list[int] = [
+                    index for index, value in enumerate(can_move) if value != 0
                 ]
 
-                neighbour_idx: int = random.choice(nonzero_indices)  # n,e,s,w
+                move_direction: int = random.choice(available_moves)  # n,e,s,w
 
-                if neighbour_idx == 0:
-                    # going there from s
+                if move_direction == 0:
                     visited_from.append(1)
-                    i -= 1
-
-                if neighbour_idx == 1:
+                    start_row -= 1
+                elif move_direction == 1:
                     visited_from.append(2)
-                    j += 1
-
-                if neighbour_idx == 2:
+                    start_col += 1
+                elif move_direction == 2:
                     visited_from.append(3)
-                    i += 1
-
-                if neighbour_idx == 3:
+                    start_row += 1
+                elif move_direction == 3:
                     visited_from.append(4)
-                    j -= 1
+                    start_col -= 1
 
-        return final_grid
+            cells_visited = sum(sum(1 for val in row if val != 0) for row in self._grid)
+
+        return maze_grid

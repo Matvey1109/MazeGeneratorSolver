@@ -11,3 +11,4 @@ class TypeOfCell(StrEnum):
     COIN = "C"
     POINT = "!"
     PATH = "+"
+    SWAMP = "~"
