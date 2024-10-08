@@ -30,9 +30,6 @@ class BFSSolver(Solver):
         queue: Queue = Queue()
         queue.put([self._start])  # Enqueue the start position
 
-        self._coin_coordinates = (0, 0)
-        self._swamp_coordinates = (0, 0)
-
         while not queue.empty():
             path: list[tuple[int, int]] = queue.get()  # Dequeue the path
             x_pos, y_pos = path[-1]  # Current position is the last element of the path
@@ -57,17 +54,3 @@ class BFSSolver(Solver):
                     queue.put(new_path)  # Enqueue the new path
 
         return path  # Return the path if end is reached
-
-    def _refactor_path(self, path: list[tuple[int, int]]) -> None:
-        """Method to refactor the path"""
-        self._length_of_path = len(path)
-
-        path.pop(0)
-        path.pop()
-
-        if self._coin_coordinates in path:
-            self._is_coin_found = True
-            path.remove(self._coin_coordinates)
-        if self._swamp_coordinates in path:
-            self._is_swamp_found = True
-            path.remove(self._swamp_coordinates)

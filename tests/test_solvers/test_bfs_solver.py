@@ -1,6 +1,7 @@
 import pytest
 
 from src.solvers.bfs_solver import BFSSolver
+from src.stats import Stats
 
 
 class TestBFSSolver:
@@ -21,7 +22,7 @@ class TestBFSSolver:
 
     def test_get_statistics(self, bfs_solver: BFSSolver):
         bfs_solver.solve()
-        length_of_path, is_coin_found, is_swamp_found = bfs_solver.get_statistics()
-        assert length_of_path == 5
-        assert is_coin_found is True
-        assert is_swamp_found is True
+        stats: Stats = bfs_solver.get_statistics()
+        assert stats.length_of_path == 5
+        assert stats.is_coin_found is True
+        assert stats.is_swamp_found is True

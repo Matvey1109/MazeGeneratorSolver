@@ -11,6 +11,7 @@ class Generator(ABC):
     def __init__(self, height: int, width: int) -> None:
         self._height: int = height
         self._width: int = width
+        self._grid: list[list[int]] = []
 
     @abstractmethod
     def generate(self) -> Maze:

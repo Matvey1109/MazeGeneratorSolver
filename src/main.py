@@ -3,7 +3,7 @@ import platform
 
 # from generators.wilson_generator import WilsonGenerator
 # from ui import UI
-# from solvers.bfs_solver import BFSSolver
+# from solvers.dfs_solver import DFSSolver
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
@@ -28,14 +28,14 @@ def main() -> None:
     # for el in maze._grid:
     #     print(" ".join(el))
 
-    # bfs_solver = BFSSolver(grid, start, end)
-    # path = bfs_solver.solve()
+    # dfs_solver = DFSSolver(grid, start, end)
+    # path = dfs_solver.solve()
     # maze.update_maze_with_path(path)
 
     # for row in maze._grid:
     #     print(" ".join(row))
 
-    # s = bfs_solver.get_statistics()
+    # s = dfs_solver.get_statistics()
     # print(s)
 
     logger.info(platform.python_version())
