@@ -61,7 +61,7 @@ class TestMaze:
 
         assert number_of_swamps == 1
 
-    def test_update_maze_with_path(self):
+    def test_correct_view_of_path(self):
         grid = [
             ["#", "#", "#", "#", "#"],
             ["#", " ", "C", "~", "#"],
