@@ -1,6 +1,6 @@
-from solvers.solver import Solver
 from solvers.bfs_solver import BFSSolver
 from solvers.dfs_solver import DFSSolver
+from solvers.solver import Solver
 
 
 class SolverFactory:

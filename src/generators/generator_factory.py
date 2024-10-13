@@ -1,5 +1,5 @@
-from generators.generator import Generator
 from generators.binary_tree_generator import BinaryTreeGenerator
+from generators.generator import Generator
 from generators.wilson_generator import WilsonGenerator
 
 
