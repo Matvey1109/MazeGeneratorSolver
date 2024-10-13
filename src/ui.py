@@ -1,13 +1,11 @@
 import os
 
-from generators.binary_tree_generator import BinaryTreeGenerator
 from generators.generator import Generator
-from generators.wilson_generator import WilsonGenerator
+from generators.generator_factory import GeneratorFactory
 from maze import Maze
 from position import Position
-from solvers.bfs_solver import BFSSolver
-from solvers.dfs_solver import DFSSolver
 from solvers.solver import Solver
+from solvers.solver_factory import SolverFactory
 from stats import Stats
 from type_of_cell import TypeOfCell
 
@@ -28,18 +26,17 @@ class UI:
                 print("Invalid position entered")
 
     @staticmethod
-    def get_generator_method() -> Generator:
+    def get_generator_method(height: int, width: int) -> Generator:
         """Gets generator method"""
         while True:
-            height, width = UI.get_height_and_width()
-
             print("Choose the maze generator method (BinaryTree or Wilson): ")
             choice: str = input(">>> ").upper()
-            if choice == "BINARYTREE":
-                return BinaryTreeGenerator(height, width)
-            elif choice == "WILSON":
-                return WilsonGenerator(height, width)
-            else:
+            try:
+                generator: Generator = GeneratorFactory.get_generator(
+                    choice, height, width
+                )
+                return generator
+            except ValueError:
                 print("Invalid choice. Please try again.")
 
     @staticmethod
@@ -50,11 +47,10 @@ class UI:
         while True:
             print("Choose the maze solver method (BFS or DFS): ")
             choice: str = input(">>> ").upper()
-            if choice == "BFS":
-                return BFSSolver(grid, start, end)
-            elif choice == "DFS":
-                return DFSSolver(grid, start, end)
-            else:
+            try:
+                solver: Solver = SolverFactory.get_solver(choice, grid, start, end)
+                return solver
+            except ValueError:
                 print("Invalid choice. Please try again.")
 
     @staticmethod
@@ -72,28 +68,28 @@ class UI:
                 print("Invalid input. Please enter integers only.")
 
     @staticmethod
-    def get_green_text(text: str) -> str:
+    def _get_green_text(text: str) -> str:
         """Return green text"""
         GREEN = "\033[92m"
         RESET = "\033[0m"
         return GREEN + text + RESET
 
     @staticmethod
-    def get_red_text(text: str) -> str:
+    def _get_red_text(text: str) -> str:
         """Return red text"""
         RED = "\033[91m"
         RESET = "\033[0m"
         return RED + text + RESET
 
     @staticmethod
-    def get_cyan_text(text: str) -> str:
+    def _get_cyan_text(text: str) -> str:
         """Return cyan text"""
         CYAN = "\033[96m"
         RESET = "\033[0m"
         return CYAN + text + RESET
 
     @staticmethod
-    def get_yellow_text(text: str) -> str:
+    def _get_yellow_text(text: str) -> str:
         """Return yellow text"""
         YELLOW = "\033[93m"
         RESET = "\033[0m"
@@ -108,16 +104,16 @@ class UI:
         for row in grid:
             for cell in row:
                 if cell == TypeOfCell.PATH:
-                    green_cell = UI.get_green_text(cell)
+                    green_cell = UI._get_green_text(cell)
                     print(green_cell, end=" ")
                 elif cell == TypeOfCell.SWAMP:
-                    cyan_cell = UI.get_cyan_text(cell)
+                    cyan_cell = UI._get_cyan_text(cell)
                     print(cyan_cell, end=" ")
                 elif cell == TypeOfCell.POINT:
-                    red_cell = UI.get_red_text(cell)
+                    red_cell = UI._get_red_text(cell)
                     print(red_cell, end=" ")
                 elif cell == TypeOfCell.COIN:
-                    yellow_cell = UI.get_yellow_text(cell)
+                    yellow_cell = UI._get_yellow_text(cell)
                     print(yellow_cell, end=" ")
                 else:
                     print(cell, end=" ")

@@ -2,6 +2,7 @@ import io
 
 import pytest
 
+from src.maze import Maze
 from src.ui import UI
 
 
@@ -28,7 +29,7 @@ class TestUI:
 
         with pytest.raises(EOFError) as exc_info:
             monkeypatch.setattr("sys.stdin", io.StringIO("error"))
-            UI.get_generator_method()
+            UI.get_generator_method(0, 0)
 
         assert exc_info.value
 
@@ -41,11 +42,27 @@ class TestUI:
     @pytest.mark.parametrize(
         "func, input, output",
         [
-            (UI.get_green_text, "test", "\033[92mtest\033[0m"),
-            (UI.get_red_text, "test", "\033[91mtest\033[0m"),
-            (UI.get_cyan_text, "test", "\033[96mtest\033[0m"),
-            (UI.get_yellow_text, "test", "\033[93mtest\033[0m"),
+            (UI._get_green_text, "test", "\033[92mtest\033[0m"),
+            (UI._get_red_text, "test", "\033[91mtest\033[0m"),
+            (UI._get_cyan_text, "test", "\033[96mtest\033[0m"),
+            (UI._get_yellow_text, "test", "\033[93mtest\033[0m"),
         ],
     )
     def test_colorful_text(self, func, input, output):
         assert func(input) == output
+
+    def test_correct_output_maze(self, capfd):
+        grid = [
+            ["#", "#", "#", "#", "#"],
+            ["#", "+", "C", "~", "#"],
+            ["#", "!", "#", "!", "#"],
+            ["#", "#", "#", "#", "#"],
+        ]
+        maze = Maze(5, 5, grid)
+
+        UI.print_maze(maze)
+
+        captured = capfd.readouterr()
+
+        # Check that there are no exceptions in the captured output
+        assert not captured.err, f"Unexpected error: {captured.err}"

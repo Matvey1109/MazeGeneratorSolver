@@ -10,7 +10,8 @@ def workflow():
         UI.clear_screen()
         UI.hello_message()
 
-        generator: Generator = UI.get_generator_method()
+        height, width = UI.get_height_and_width()
+        generator: Generator = UI.get_generator_method(height, width)
         maze: Maze = generator.generate()
 
         UI.print_maze(maze)
