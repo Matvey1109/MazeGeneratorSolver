@@ -4,6 +4,10 @@ from generators.wilson_generator import WilsonGenerator
 
 
 class GeneratorFactory:
+    """
+    Factory class for creating generators based on the user input
+    """
+
     @staticmethod
     def get_generator(generator_type: str, height: int, width: int) -> Generator:
         if generator_type == "BINARYTREE":
