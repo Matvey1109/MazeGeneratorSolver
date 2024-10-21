@@ -1,10 +1,10 @@
 from queue import Queue
 
-from solvers.solver import Solver
+from solvers.solver import ISolver
 from type_of_cell import TypeOfCell
 
 
-class BFSSolver(Solver):
+class BFSSolver(ISolver):
     """
     Class for solver of maze based on the bfs algorithm
     """

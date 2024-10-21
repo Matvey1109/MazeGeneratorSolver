@@ -18,3 +18,7 @@ Explores a grid-based maze by initializing a queue with the starting position an
 ### DFS
 
 Explores a grid-based maze using a stack to manage paths. It begins by pushing the starting position onto the stack along with the corresponding path. The algorithm continues by popping the last position and its path from the stack, checking if it matches the endpoint; if it does, the path is returned. For each position, it evaluates four potential movements (right, down, left, up), ensuring the next cell is within bounds, not a wall, and not already in the current path. Valid next positions are then pushed onto the stack with their updated paths, allowing the search to proceed until the endpoint is reached.
+
+
+**P.S.**
+Maze in format list[list[str]]

@@ -17,8 +17,8 @@ class TestUI:
     def test_get_position_from_user(
         self, mock_input, user_input, expected_output, monkeypatch
     ):
-        monkeypatch.setattr("sys.stdin", io.StringIO(user_input))
-        assert UI.get_position_from_user(mock_input) == expected_output
+        monkeypatch.setattr("sys.stdin", io.StringIO(user_input.lower()))
+        assert UI.get_position_from_user(mock_input) == expected_output.lower()
 
     def test_invalid_user_input(self, monkeypatch):
         with pytest.raises(EOFError) as exc_info:

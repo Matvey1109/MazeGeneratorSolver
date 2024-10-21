@@ -1,11 +1,11 @@
 import random
 
-from generators.generator import Generator
+from generators.generator import IGenerator
 from maze import Maze
 from type_of_cell import TypeOfCell
 
 
-class BinaryTreeGenerator(Generator):
+class BinaryTreeGenerator(IGenerator):
     """
     Class for maze generator based on the Binary Tree algorithm
     """

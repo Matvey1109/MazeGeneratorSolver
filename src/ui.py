@@ -1,10 +1,8 @@
 import os
 
-from generators.generator import Generator
 from generators.generator_factory import GeneratorFactory
 from maze import Maze
 from position import Position
-from solvers.solver import Solver
 from solvers.solver_factory import SolverFactory
 from stats import Stats
 from type_of_cell import TypeOfCell
@@ -12,44 +10,43 @@ from type_of_cell import TypeOfCell
 
 class UI:
     @staticmethod
-    def get_position_from_user(num_points_set: int) -> str:  # while num_points_set < 2
+    def get_position_from_user(num_points_set: int) -> str:
+        """Gets position from user"""
         positions: list[Position] = list(Position)
 
         while True:
             print(
                 f"Enter the position #{num_points_set + 1} (LEFT_UP, RIGHT_UP, LEFT_DOWN, RIGHT_DOWN): "
             )
-            position_choice: str = input(">>> ").upper()
-            if position_choice in [pos.name for pos in positions]:
+            position_choice: str = input(">>> ").lower()
+            if position_choice in [pos for pos in positions]:
                 return position_choice
             else:
                 print("Invalid position entered")
 
     @staticmethod
-    def get_generator_method(height: int, width: int) -> Generator:
+    def get_generator_method(height: int, width: int) -> str:
         """Gets generator method"""
         while True:
             print("Choose the maze generator method (BinaryTree or Wilson): ")
-            choice: str = input(">>> ").upper()
+            choice: str = input(">>> ").lower()
             try:
-                generator: Generator = GeneratorFactory.get_generator(
-                    choice, height, width
-                )
-                return generator
+                GeneratorFactory.get_generator(choice, height, width)
+                return choice
             except ValueError:
                 print("Invalid choice. Please try again.")
 
     @staticmethod
     def get_solver_method(
         grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]
-    ) -> Solver:
+    ) -> str:
         """Gets solver method"""
         while True:
             print("Choose the maze solver method (BFS or DFS): ")
-            choice: str = input(">>> ").upper()
+            choice: str = input(">>> ").lower()
             try:
-                solver: Solver = SolverFactory.get_solver(choice, grid, start, end)
-                return solver
+                SolverFactory.get_solver(choice, grid, start, end)
+                return choice
             except ValueError:
                 print("Invalid choice. Please try again.")
 
@@ -122,8 +119,8 @@ class UI:
     @staticmethod
     def print_stats(stats: Stats):
         """Displays stats of the Maze"""
-        is_coin_in_path: str = "Yes" if stats.is_coin_found else "No"
-        is_swamp_in_path: str = "Yes" if stats.is_swamp_found else "No"
+        is_coin_in_path: str = "YES" if stats.is_coin_found else "NO"
+        is_swamp_in_path: str = "YES" if stats.is_swamp_found else "NO"
         print(
             f"Your stats: Length of path: {stats.length_of_path}, Is coin found: {is_coin_in_path}, Is swamp found: {is_swamp_in_path}"
         )

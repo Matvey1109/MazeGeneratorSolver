@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from stats import Stats
 
 
-class Solver(ABC):
+class ISolver(ABC):
     """
     Abstract class for solver of maze
     """

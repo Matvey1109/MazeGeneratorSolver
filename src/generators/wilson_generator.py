@@ -1,11 +1,12 @@
 import random
 
-from generators.generator import Generator
+from direction import Direction
+from generators.generator import IGenerator
 from maze import Maze
 from type_of_cell import TypeOfCell
 
 
-class WilsonGenerator(Generator):
+class WilsonGenerator(IGenerator):
     """
     Class for maze generator based on the Wilson's algorithm
     """
@@ -25,11 +26,9 @@ class WilsonGenerator(Generator):
 
     def _create_zero_grid(self) -> None:
         """Create a zero grid"""
-        grid: list[list[int]] = [
+        self._grid: list[list[int]] = [
             [0 for _ in range(self._width)] for _ in range(self._height)
         ]
-
-        self._grid: list[list[int]] = grid
 
     def _get_maze_grid(self) -> list[list[str]]:
         """Get the maze grid based on the zero grid"""
@@ -56,22 +55,39 @@ class WilsonGenerator(Generator):
                     self._grid[v_row][v_col] = 1
                     row_offset = v_row * 2 + 1
                     col_offset = v_col * 2 + 1
-                    maze_grid[row_offset][col_offset] = " "
+                    maze_grid[row_offset][col_offset] = TypeOfCell.EMPTY.value
 
                     direction = visited_from[idx]
 
-                    if direction == 1:
-                        maze_grid[row_offset - 1][col_offset] = " "
-                        maze_grid[row_offset - 2][col_offset] = " "
-                    elif direction == 2:
-                        maze_grid[row_offset][col_offset + 1] = " "
-                        maze_grid[row_offset][col_offset + 2] = " "
-                    elif direction == 3:
-                        maze_grid[row_offset + 1][col_offset] = " "
-                        maze_grid[row_offset + 2][col_offset] = " "
-                    elif direction == 4:
-                        maze_grid[row_offset][col_offset - 1] = " "
-                        maze_grid[row_offset][col_offset - 2] = " "
+                    match direction:
+                        case Direction.NORTH.value:
+                            maze_grid[row_offset - 1][
+                                col_offset
+                            ] = TypeOfCell.EMPTY.value
+                            maze_grid[row_offset - 2][
+                                col_offset
+                            ] = TypeOfCell.EMPTY.value
+                        case Direction.EAST.value:
+                            maze_grid[row_offset][
+                                col_offset + 1
+                            ] = TypeOfCell.EMPTY.value
+                            maze_grid[row_offset][
+                                col_offset + 2
+                            ] = TypeOfCell.EMPTY.value
+                        case Direction.SOUTH.value:
+                            maze_grid[row_offset + 1][
+                                col_offset
+                            ] = TypeOfCell.EMPTY.value
+                            maze_grid[row_offset + 2][
+                                col_offset
+                            ] = TypeOfCell.EMPTY.value
+                        case Direction.WEST.value:
+                            maze_grid[row_offset][
+                                col_offset - 1
+                            ] = TypeOfCell.EMPTY.value
+                            maze_grid[row_offset][
+                                col_offset - 2
+                            ] = TypeOfCell.EMPTY.value
 
                 visited_cells.clear()
                 visited_from.clear()
@@ -101,20 +117,21 @@ class WilsonGenerator(Generator):
                     index for index, value in enumerate(can_move) if value != 0
                 ]
 
-                move_direction: int = random.choice(available_moves)  # n,e,s,w
+                move_direction: int = random.choice(available_moves) + 1  # n,e,s,w
 
-                if move_direction == 0:
-                    visited_from.append(1)
-                    start_row -= 1
-                elif move_direction == 1:
-                    visited_from.append(2)
-                    start_col += 1
-                elif move_direction == 2:
-                    visited_from.append(3)
-                    start_row += 1
-                elif move_direction == 3:
-                    visited_from.append(4)
-                    start_col -= 1
+                match move_direction:
+                    case Direction.NORTH.value:
+                        visited_from.append(Direction.NORTH.value)
+                        start_row -= 1
+                    case Direction.EAST.value:
+                        visited_from.append(Direction.EAST.value)
+                        start_col += 1
+                    case Direction.SOUTH.value:
+                        visited_from.append(Direction.SOUTH.value)
+                        start_row += 1
+                    case Direction.WEST.value:
+                        visited_from.append(Direction.WEST.value)
+                        start_col -= 1
 
             cells_visited = sum(sum(1 for val in row if val != 0) for row in self._grid)
 

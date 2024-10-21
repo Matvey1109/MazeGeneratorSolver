@@ -1,23 +1,29 @@
-from generators.generator import Generator
+from generators.generator import IGenerator
+from generators.generator_factory import GeneratorFactory
 from maze import Maze
-from solvers.solver import Solver
+from solvers.solver import ISolver
+from solvers.solver_factory import SolverFactory
 from stats import Stats
 from ui import UI
 
 
 def workflow():
+    """Implement workflow"""
+    MAX_NUMBER_OF_POINTS_IN_MAZE: int = 2
+
     while True:
         UI.clear_screen()
         UI.hello_message()
 
         height, width = UI.get_height_and_width()
-        generator: Generator = UI.get_generator_method(height, width)
+        choice: str = UI.get_generator_method(height, width)
+        generator: IGenerator = GeneratorFactory.get_generator(choice, height, width)
         maze: Maze = generator.generate()
 
         UI.print_maze(maze)
 
         num_points_set: int = 0
-        while num_points_set < 2:
+        while num_points_set < MAX_NUMBER_OF_POINTS_IN_MAZE:
             pos: str = UI.get_position_from_user(num_points_set)
             num_points_set: int = maze.set_point(pos)
 
@@ -28,7 +34,8 @@ def workflow():
 
         start, end = maze.get_start_and_end_positions()
         grid: list[list[str]] = maze.get_grid()
-        solver: Solver = UI.get_solver_method(grid, start, end)
+        choice: str = UI.get_solver_method(grid, start, end)
+        solver: ISolver = SolverFactory.get_solver(choice, grid, start, end)
         path: list[tuple[int, int]] = solver.solve()
         maze.update_maze_with_path(path)
 

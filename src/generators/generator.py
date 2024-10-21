@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from maze import Maze
 
 
-class Generator(ABC):
+class IGenerator(ABC):
     """
     Abstract class for maze generators
     """

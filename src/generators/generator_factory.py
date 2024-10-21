@@ -1,6 +1,17 @@
+from enum import StrEnum, auto
+
 from generators.binary_tree_generator import BinaryTreeGenerator
-from generators.generator import Generator
+from generators.generator import IGenerator
 from generators.wilson_generator import WilsonGenerator
+
+
+class GeneratorType(StrEnum):
+    """
+    Enum class for generator types
+    """
+
+    BINARYTREE = auto()
+    WILSON = auto()
 
 
 class GeneratorFactory:
@@ -9,12 +20,13 @@ class GeneratorFactory:
     """
 
     @staticmethod
-    def get_generator(generator_type: str, height: int, width: int) -> Generator:
-        if generator_type == "BINARYTREE":
-            generator: Generator = BinaryTreeGenerator(height, width)
-        elif generator_type == "WILSON":
-            generator: Generator = WilsonGenerator(height, width)
-        else:
-            raise ValueError
+    def get_generator(generator_type: str, height: int, width: int) -> IGenerator:
+        match generator_type:
+            case GeneratorType.BINARYTREE:
+                generator: IGenerator = BinaryTreeGenerator(height, width)
+            case GeneratorType.WILSON:
+                generator: IGenerator = WilsonGenerator(height, width)
+            case _:
+                raise ValueError
 
         return generator
