@@ -1,7 +1,7 @@
 import logging
 import platform
 
-from workflow import workflow
+from src.workflow import workflow
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)

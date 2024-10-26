@@ -1,7 +1,7 @@
 import random
 
-from position import Position
-from type_of_cell import TypeOfCell
+from src.position import Position
+from src.type_of_cell import TypeOfCell
 
 
 class Maze:

@@ -1,8 +1,8 @@
 from enum import StrEnum, auto
 
-from generators.binary_tree_generator import BinaryTreeGenerator
-from generators.generator import IGenerator
-from generators.wilson_generator import WilsonGenerator
+from src.generators.binary_tree_generator import BinaryTreeGenerator
+from src.generators.generator import IGenerator
+from src.generators.wilson_generator import WilsonGenerator
 
 
 class GeneratorType(StrEnum):
@@ -20,7 +20,9 @@ class GeneratorFactory:
     """
 
     @staticmethod
-    def get_generator(generator_type: str, height: int, width: int) -> IGenerator:
+    def get_generator(
+        generator_type: GeneratorType, height: int, width: int
+    ) -> IGenerator:
         match generator_type:
             case GeneratorType.BINARYTREE:
                 generator: IGenerator = BinaryTreeGenerator(height, width)

@@ -1,7 +1,7 @@
 from queue import Queue
 
-from solvers.solver import ISolver
-from type_of_cell import TypeOfCell
+from src.solvers.solver import ISolver
+from src.type_of_cell import TypeOfCell
 
 
 class BFSSolver(ISolver):

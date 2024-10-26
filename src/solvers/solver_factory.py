@@ -1,8 +1,8 @@
 from enum import StrEnum, auto
 
-from solvers.bfs_solver import BFSSolver
-from solvers.dfs_solver import DFSSolver
-from solvers.solver import ISolver
+from src.solvers.bfs_solver import BFSSolver
+from src.solvers.dfs_solver import DFSSolver
+from src.solvers.solver import ISolver
 
 
 class SolverType(StrEnum):
@@ -21,7 +21,7 @@ class SolverFactory:
 
     @staticmethod
     def get_solver(
-        solver_type: str,
+        solver_type: SolverType,
         grid: list[list[str]],
         start: tuple[int, int],
         end: tuple[int, int],

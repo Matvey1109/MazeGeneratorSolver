@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from stats import Stats
+from src.stats import Stats
 
 
 class ISolver(ABC):

@@ -1,8 +1,8 @@
 import random
 
-from generators.generator import IGenerator
-from maze import Maze
-from type_of_cell import TypeOfCell
+from src.generators.generator import IGenerator
+from src.maze import Maze
+from src.type_of_cell import TypeOfCell
 
 
 class BinaryTreeGenerator(IGenerator):

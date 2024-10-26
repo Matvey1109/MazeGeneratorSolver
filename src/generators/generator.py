@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from maze import Maze
+from src.maze import Maze
 
 
 class IGenerator(ABC):

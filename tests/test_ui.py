@@ -29,13 +29,13 @@ class TestUI:
 
         with pytest.raises(EOFError) as exc_info:
             monkeypatch.setattr("sys.stdin", io.StringIO("error"))
-            UI.get_generator_method(0, 0)
+            UI.get_generator_method()
 
         assert exc_info.value
 
         with pytest.raises(EOFError) as exc_info:
             monkeypatch.setattr("sys.stdin", io.StringIO("error"))
-            UI.get_solver_method([[]], (0, 0), (0, 0))
+            UI.get_solver_method()
 
         assert exc_info.value
 

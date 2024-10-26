@@ -1,11 +1,11 @@
 import os
 
-from generators.generator_factory import GeneratorFactory
-from maze import Maze
-from position import Position
-from solvers.solver_factory import SolverFactory
-from stats import Stats
-from type_of_cell import TypeOfCell
+from src.generators.generator_factory import GeneratorType
+from src.maze import Maze
+from src.position import Position
+from src.solvers.solver_factory import SolverType
+from src.stats import Stats
+from src.type_of_cell import TypeOfCell
 
 
 class UI:
@@ -25,28 +25,24 @@ class UI:
                 print("Invalid position entered")
 
     @staticmethod
-    def get_generator_method(height: int, width: int) -> str:
+    def get_generator_method() -> GeneratorType:
         """Gets generator method"""
         while True:
             print("Choose the maze generator method (BinaryTree or Wilson): ")
             choice: str = input(">>> ").lower()
             try:
-                GeneratorFactory.get_generator(choice, height, width)
-                return choice
+                return GeneratorType(choice)
             except ValueError:
                 print("Invalid choice. Please try again.")
 
     @staticmethod
-    def get_solver_method(
-        grid: list[list[str]], start: tuple[int, int], end: tuple[int, int]
-    ) -> str:
+    def get_solver_method() -> SolverType:
         """Gets solver method"""
         while True:
             print("Choose the maze solver method (BFS or DFS): ")
             choice: str = input(">>> ").lower()
             try:
-                SolverFactory.get_solver(choice, grid, start, end)
-                return choice
+                return SolverType(choice)
             except ValueError:
                 print("Invalid choice. Please try again.")
 
