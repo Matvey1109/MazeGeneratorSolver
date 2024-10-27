@@ -1,9 +1,9 @@
 from src.constants import Constants
 from src.generators.generator import IGenerator
-from src.generators.generator_factory import GeneratorFactory
+from src.generators.generator_factory import GeneratorFactory, GeneratorType
 from src.maze import Maze
 from src.solvers.solver import ISolver
-from src.solvers.solver_factory import SolverFactory
+from src.solvers.solver_factory import SolverFactory, SolverType
 from src.stats import Stats
 from src.ui import UI
 
@@ -16,8 +16,10 @@ def workflow():
         UI.hello_message()
 
         height, width = UI.get_height_and_width()
-        choice: str = UI.get_generator_method()
-        generator: IGenerator = GeneratorFactory.get_generator(choice, height, width)
+        generator_type: GeneratorType = UI.get_generator_method()
+        generator: IGenerator = GeneratorFactory.get_generator(
+            generator_type, height, width
+        )
         maze: Maze = generator.generate()
 
         UI.print_maze(maze)
@@ -34,8 +36,8 @@ def workflow():
 
         start, end = maze.get_start_and_end_positions()
         grid: list[list[str]] = maze.get_grid()
-        choice: str = UI.get_solver_method()
-        solver: ISolver = SolverFactory.get_solver(choice, grid, start, end)
+        solver_type: SolverType = UI.get_solver_method()
+        solver: ISolver = SolverFactory.get_solver(solver_type, grid, start, end)
         path: list[tuple[int, int]] = solver.solve()
         maze.update_maze_with_path(path)
 
